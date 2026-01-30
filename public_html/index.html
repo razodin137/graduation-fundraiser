@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Cam Cross the Finish Line</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #D4AF37;
+            /* Semi-transparent Charcoal */
+            --glass-charcoal: rgba(30, 30, 30, 0.65); 
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-white: #ffffff;
+            --text-muted: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #1a1a1a;
+            padding-bottom: 100px; 
+        }
+
+        /* --- BACKGROUND SETUP --- */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            display: flex;
+        }
+
+        .bg-left, .bg-right {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .bg-left {
+            background-image: url('mfu.jpg')
+; 
+        }
+
+        .bg-right {
+            background-image: url('https://www.shutterstock.com/shutterstock/photos/1160663485/display_1500/stock-photo-wedding-ceremony-august-assumption-cathedral-bangkok-or-assumption-cathedral-the-roman-1160663485.jpg');
+        }
+
+        /* Dark Overlay for basic readability */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(3px); /* Gentle background blur */
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 1000px;
+            padding: 20px;
+            margin-top: 40px;
+            z-index: 10;
+        }
+
+        /* Video Container Styling */
+        .video-container {
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-white);
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        }
+
+        /* --- TIERED CARDS --- */
+        .cards-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        /* UPDATED CARD STYLE: Transparency returned + Glass effect */
+        .card {
+            background-color: var(--glass-charcoal);
+            backdrop-filter: blur(5px); /* Gentle blur to see image behind */
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px 20px;
+            flex: 1;
+            min-width: 280px;
+            max-width: 320px;
+            color: var(--text-white);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-color: var(--primary-gold);
+            background-color: rgba(30, 30, 30, 0.75); /* Slightly more opaque on hover */
+        }
+
+        .icon-box {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary-gold);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-gold);
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn:hover {
+            background-color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .bank-details {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: auto;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .bank-details span {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-gold);
+        }
+
+        /* --- EXTRA FOOTER TEXT --- */
+        .footer-note {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .footer-note a {
+            color: var(--primary-gold);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary-gold);
+        }
+
+        /* --- PROGRESS BAR FOOTER --- */
+        .progress-footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-white);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-gold), #fff);
+            border-radius: 5px;
+            width: 35%; 
+            transition: width 1s ease-in-out;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .bg-container { flex-direction: column; }
+            h1 { font-size: 2rem; }
+            .cards-grid { flex-direction: column; align-items: center; }
+            .progress-footer {
+                bottom: 0;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                border-bottom: none;
+                border-left: none;
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND IMAGES -->
+    <div class="bg-container">
+        <div class="bg-left"><div class="overlay"></div></div>
+        <div class="bg-right"><div class="overlay"></div></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+        
+        <!-- 
+           VIDEO PLACEHOLDER 
+           Uncomment the div below to add a YouTube video.
+           Replace 'VIDEO_ID' with your actual YouTube ID.
+        -->
+        <!--
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        -->
+
+        <h1>Help Cam cross the finish line</h1>
+        <p class="subtitle">Wedding & Graduation Fund</p>
+
+        <div class="cards-grid">
+            
+            <!-- OPTION 1: PAYPAL -->
+            <div class="card">
+                <div class="icon-box"><i class="fab fa-paypal"></i></div>
+                <h2>PayPal</h2>
+                <p>Quick and easy contributions via PayPal.</p>
+                <a href="https://www.paypal.com/paypalme/kaojaicam" target="_blank" class="btn">Donate via PayPal</a>
+            </div>
+
+            <!-- OPTION 2: WISE -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-globe-americas"></i></div>
+                <h2>Wise</h2>
+                <p>Best for low-cost international transfers. Wise gives you a free first transfer of up to $600 when signing up at this link.</p>
+                <a href="https://wise.com/invite/dic/johnn1980" target="_blank" class="btn">Send via Wise</a>
+            </div>
+
+            <!-- OPTION 3: BANK DETAILS -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-university"></i></div>
+                <h2>Bank Transfer (USD)</h2>
+                <p>Direct transfer to my local account.</p>
+                
+                <div class="bank-details">
+                    <!-- Bank Details Placeholder -->
+                    <em>Routing: 071000013<br>Account: 59385380082943546<br>Bank Name: JP Morgan Chase / Account of Charles Schwab</em>
+                </div>
+            </div>
+
+        </div>
+
+        <p class="footer-note">
+            If Apple Pay or some other payment service is more convenient, please send me a private message and I will send you my details.
+        </p>
+
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-footer">
+        <div class="progress-labels">
+            <span>Raised: <strong>$925</strong></span>
+            <span>Goal: <strong>$5,000</strong></span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" style="width: 35%;"></div>
+        </div>
+    </div>
+
+</body>
+</html>
